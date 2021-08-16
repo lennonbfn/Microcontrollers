@@ -2,14 +2,7 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
- 
-/* Code zu dem Video https://youtu.be/5tG3JXFYrUo von Ali Panjaitan
-*/
-
-char ssid []= "BrandaoNascimento";
-//const char* pass = "jesuseosenhor";
-
-//const char* ssid="BrandaoNascimento";
+const char* ssid="BrandaoNascimento";
 const char* pass="jesuseosenhor";
 const char* brokerUser = "lennon";
 const char* brokerPass = "960616";
@@ -20,6 +13,7 @@ float currentTime, lastTime;
  
 WiFiClient espClient;
 PubSubClient client(espClient);
+
 int count = 0;
 char messages[50];
  
@@ -33,20 +27,21 @@ void setupWifi(){
     Serial.print("-");
   }
  
-  Serial.print("\nConnected to ");
+  Serial.print("\n Conectado a rede");
   Serial.println(ssid);
 }
  
 void reconnect(){
   while(!client.connected()){
-    Serial.print("\nConncting to ");
+    Serial.print("\n Tentativa de conexão com broker ");
     Serial.println(broker);
-    if(client.connect("espnext01", brokerUser, brokerPass)){
-      Serial.print("\nConnected to ");
+    if(client.connect("esp 01", brokerUser, brokerPass))
+    {
+      Serial.print("\nConectado ao broker ");
       Serial.println(broker);
       client.subscribe(inTopic);
     } else {
-      Serial.println("\n Trying to reconnect");
+      Serial.println("\n tentando reconectar");
       delay(5000);
     }
   }
@@ -60,7 +55,6 @@ void callback(char* topic, byte* payload, unsigned int length){
   }
   Serial.println();
 }
- 
 void setup() {
     // put your setup code here, to run once:
     Serial.begin(115200);
@@ -68,7 +62,8 @@ void setup() {
     client.setServer(broker, 1883);
     client.setCallback(callback);
 }
- 
+
+
 void loop() {
     // put your main code here, to run repeatedly:
     if (!client.connected()){
